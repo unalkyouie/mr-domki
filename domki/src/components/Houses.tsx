@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, FlatList, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { House } from '../consts';
-import { deleteHouse } from '../reducers/houseReducer';
+import { chooseHouseId } from '../reducers/houseReducer';
 import { AppDispatch } from '../store';
 
 interface HousesProps {
@@ -12,15 +13,16 @@ interface HousesProps {
 
 const Houses: React.FC<HousesProps> = ({ data }) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const navigation = useNavigation();
   return (
     <FlatList
       data={data}
-      renderItem={({ item, index }) => (
+      renderItem={({ item }) => (
         <TouchableOpacity
-          key={index}
+          key={item._id}
           onPress={() => {
-            dispatch(deleteHouse(item._id));
+            dispatch(chooseHouseId(item._id));
+            navigation.navigate('Details');
           }}>
           <Text>{item.address}</Text>
         </TouchableOpacity>

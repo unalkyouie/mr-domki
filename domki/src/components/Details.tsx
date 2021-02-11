@@ -1,31 +1,48 @@
-import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { House } from '../consts';
-import { deleteHouse } from '../reducers/houseReducer';
+import { deleteHouse, fetchHouse } from '../reducers/houseReducer';
 
 interface HouseDetailsProps {
-  house: House;
+  houseId: string;
 }
 
-const Details: React.FC<HouseDetailsProps> = ({ house }) => {
+const Details: React.FC<HouseDetailsProps> = ({ houseId }) => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
+  const [house, setHouse] = useState<House>();
+  useEffect(() => {
+    async () => {
+      const details = await dispatch(fetchHouse(houseId));
+      setHouse(details);
+    };
+  }, [dispatch, houseId]);
   return (
     <View>
-      <Text>{house.address}</Text>
-      <Text>{house.owner}</Text>
-      <Text>{house.area}</Text>
-      <Text>{house.price}</Text>
+      <Text style={styles.text}>{house?.address}</Text>
+      <Text style={styles.text}>{house?.owner}</Text>
+      <Text style={styles.text}>{house?.area}</Text>
+      <Text style={styles.text}>{house?.price}</Text>
       <Button
         title={'removeHouse'}
-        onPress={() => {
-          house._id && dispatch(deleteHouse(house._id));
+        onPress={async () => {
+          house?._id && (await dispatch(deleteHouse(house._id)));
+          navigation.navigate('List');
         }}
       />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  text: {
+    fontSize: 16,
+    color: 'black',
+  },
+});
 
 export default Details;
