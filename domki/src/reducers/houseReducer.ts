@@ -4,57 +4,69 @@ import { House } from '../consts';
 import { createHouse } from '../utils/createHouse';
 import { getHouse } from '../utils/getHouse';
 import { getHouses } from '../utils/getHouses';
+import { removeHouse } from '../utils/removeHouse';
 
-const fetchHousesList = createAsyncThunk('houses/getHouses', async () => {
-  const response = await getHouses();
-  return response.data;
-});
+export const fetchHousesList = createAsyncThunk(
+  'houses/getHouses',
+  async () => {
+    const response = await getHouses();
+    return response;
+  },
+);
 
-const fetchHouse = createAsyncThunk(
+export const fetchHouse = createAsyncThunk(
   'houses/getHouse',
   async (houseId: string) => {
     const response = await getHouse(houseId);
-    return response.data;
+    return response;
   },
 );
-const deleteHouse = createAsyncThunk(
+export const deleteHouse = createAsyncThunk(
   'houses/removeHouse',
   async (houseId: string) => {
     const response = await removeHouse(houseId);
-    return response.data;
+    return response;
   },
 );
-// const addHouse = createAsyncThunk(
-//   'houses/createHouse',
-//   async (house: House[]) => {
-//     const response = await createHouse(house);
-//     return response.data;
-//   },
-// );
+export const addHouse = createAsyncThunk(
+  'houses/createHouse',
+  async (house: House[]) => {
+    const response = await createHouse(house);
+    return response;
+  },
+);
 
 export interface HouseListState {
   houseList: House[];
+  chosenHouseId: string;
 }
 
 const initialState: HouseListState = {
   houseList: [],
+  chosenHouseId: '',
 };
 
 const houseListSlice = createSlice({
   name: 'houses',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    chooseHouseId: (state, action) => {
+      state.chosenHouseId = action.payload;
+    },
+  },
   extraReducers: {
-    // [createHouse.fulfilled]: (state, action) => {},
-    [deleteHouse.fulfilled]: (state, action) => {
-     state.
+    [addHouse.fulfilled.type]: (state, action) => {},
+    [deleteHouse.fulfilled.type]: (state, action) => {
+      const id = action.payload;
+      state.houseList.slice(id, 1);
     },
-    [fetchHousesList.fulfilled]: (state, action) => {
-      state.houseList = action.payload;
+    [fetchHousesList.fulfilled.type]: (state, action) => {
+      state.houseList.push(action.payload);
     },
-    [fetchHouse.fulfilled]: (state, action) => {},
+    [fetchHouse.fulfilled.type]: (state, action) => {
+      state.houseList.push(action.payload);
+    },
   },
 });
-
-export const { addHouse, removeHouse } = houseListSlice.actions;
+export const { chooseHouseId } = houseListSlice.actions;
 export default houseListSlice.reducer;
