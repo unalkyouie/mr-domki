@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { URL } from '@env';
 
 export const getHouses = async () => {
@@ -10,5 +8,5 @@ export const getHouses = async () => {
     },
   });
   const res = await response.json();
-  return res;
+  return res.houses;
 };
