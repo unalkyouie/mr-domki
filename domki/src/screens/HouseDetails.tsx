@@ -14,7 +14,7 @@ const HouseDetails = () => {
   useEffect(() => {
     if (houseId) {
       const promise = dispatch(fetchHouse(houseId));
-      setHouse(dispatchedHouse);
+      setHouse(promise);
     }
   }, []);
   return (

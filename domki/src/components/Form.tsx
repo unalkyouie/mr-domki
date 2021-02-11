@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { House } from '../consts';
+import { AppDispatch } from '../store';
 
-interface FormProps {
-  onPress: (house: House) => void;
-}
-
-const Form: React.FC<FormProps> = ({ onPress }) => {
+const Form = () => {
   const [address, setAddress] = useState('');
   const [owner, setOwner] = useState('');
   const [area, setArea] = useState('');
   const [price, setPrice] = useState('');
-
+  const dispatch = useDispatch<AppDispatch>();
   const addHouse = () => {
     const house = {
       address,
@@ -20,7 +17,7 @@ const Form: React.FC<FormProps> = ({ onPress }) => {
       area,
       price,
     };
-    onPress(house);
+    dispatch(addHouse(house));
   };
 
   return (

@@ -3,15 +3,15 @@ import { Text, FlatList, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import { House } from '../consts';
-import { AppState } from '../reducers';
 import { deleteHouse } from '../reducers/houseReducer';
+import { AppDispatch } from '../store';
 
 interface HousesProps {
   data: House[];
 }
 
 const Houses: React.FC<HousesProps> = ({ data }) => {
-  const dispatch = useDispatch<AppState>();
+  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <FlatList

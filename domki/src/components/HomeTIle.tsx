@@ -13,22 +13,10 @@ import { Tile } from '../consts';
 
 const { width } = Dimensions.get('window');
 
-const HomeTile: React.FC<Tile> = ({
-  title,
-  subTitle,
-  backgroundImage,
-  text,
-  button,
-}) => {
+const HomeTile: React.FC<Tile> = ({ title, subTitle, text, button }) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      {/* {!backgroundImage && (
-        <ImageBackground
-          style={styles.image}
-          source={{ uri: { backgroundImage } }}
-        />
-      )} */}
       <Text style={styles.title}>{title.toUpperCase()}</Text>
       <Text style={styles.subtitle}>{subTitle?.toLowerCase()}</Text>
       <Text style={styles.text}>{text}</Text>

@@ -1,5 +1,6 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Button, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 
 import Houses from '../components/Houses';
@@ -10,8 +11,15 @@ const HouseList = () => {
   const houses = useSelector<AppState, House[]>(
     (state) => state.houses.houseList,
   );
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      <Button
+        title={'add'}
+        onPress={() => {
+          navigation.navigate('Add');
+        }}
+      />
       <Houses data={houses} />
     </View>
   );
